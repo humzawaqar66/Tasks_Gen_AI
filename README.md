@@ -106,3 +106,163 @@ Semantic Chunking: The text is split into semantic chunks using SemanticChunker,
 embeddings = get_embeddings([doc.page_content for doc in docs])
 ```
 Embedding Generation: The embeddings for each document chunk are generated using a function get_embeddings, which captures the semantic meaning of the text.
+
+
+# README for Task 2: Personalized Study Plans For Students Using LangChain
+
+## Overview
+This task involves creating a personalized study plan generator for students using LangChain and OpenAI's GPT model. The generator takes into account various factors such as the student's name, field of study, year of study, subjects, learning styles, personal objectives, challenges, and extracurricular activities to create a tailored study plan.
+
+## Key Features
+- **Personalized Study Plans:** Generates study plans customized to the individual needs and preferences of students.
+- **Integration with OpenAI:** Utilizes OpenAI's GPT model to generate detailed and actionable study plans.
+- **Flexible Input:** Accepts various input parameters to cater to different student profiles.
+
+## Code Explanation
+
+```python
+# Import necessary libraries
+from langchain.prompts import PromptTemplate
+from langchain.chat_models import ChatOpenAI
+import os
+```
+Library Imports: The code begins by importing the necessary libraries from LangChain. PromptTemplate is used to create structured prompts, and ChatOpenAI is used to interact with the OpenAI model. The os library is imported to manage environment variables.
+
+```python
+# Set OpenAI API Key
+os.environ["OPENAI_API_KEY"] = "your API key"
+```
+API Key Configuration: The OpenAI API key is set in the environment to allow access to the OpenAI services. Replace "your API key" with your actual OpenAI API key.
+
+```python
+# Initialize OpenAI model
+llm = ChatOpenAI(model="gpt-4", temperature=0.3)
+```
+Model Initialization: An instance of the OpenAI model is created with a specified temperature. The temperature controls the randomness of the model's responses; a lower value results in more deterministic outputs.
+
+```python
+# Define the detailed prompt template
+prompt_template = PromptTemplate(
+    input_variables=[
+        "name",
+        "field_of_study",
+        "year_of_study",
+        "list_of_subjects",
+        "preferred_learning_styles",
+        "personal_objectives",
+        "challenges",
+        "extracurricular_activities"
+    ],
+    template=(
+        "You are an expert academic planner. Your task is to create a personalized study plan for a student based on the following information:\n"
+        "Student Name: {name}\n"
+        "Field of Study: {field_of_study}\n"
+        "Year of Study: {year_of_study}\n"
+        "List of Subjects: {list_of_subjects} (e.g., Math, Physics, Literature)\n"
+        "Preferred Learning Styles: {preferred_learning_styles} (e.g., visual, auditory, kinesthetic)\n"
+        "Personal Objectives: {personal_objectives} (e.g., preparing for exams, improving specific subjects)\n"
+        "Challenges: {challenges} (e.g., time management issues, difficulty concentrating)\n"
+        "Extracurricular Activities: {extracurricular_activities} (e.g., sports, music, coding)\n\n"
+        "Using this information, create a study plan that includes:\n"
+        "1. Weekly schedules customized to the student's learning style and academic requirements.\n"
+        "2. Strategies to address the challenges mentioned.\n"
+        "3. Suggestions for balancing extracurricular activities with academic goals.\n"
+        "4. Specific action items for achieving personal objectives.\n"
+        "5. Resources or tools that align with the student's learning style and needs.\n\n"
+        "Ensure the plan is detailed, actionable, and motivating for the student."
+    )
+)
+
+```
+Prompt Template Definition: A detailed prompt template is defined to guide the model in generating a personalized study plan. The input_variables list specifies the parameters that will be filled in the template, and the template string outlines the structure and content of the prompt.
+
+```python
+# Example usage
+example_input = {
+    "name": "Alex Johnson",
+    "field_of_study": "Computer Science",
+    "year_of_study": "2nd Year",
+    "list_of_subjects": "Data Structures, Algorithms, Operating Systems",
+    "preferred_learning_styles": "Visual and kinesthetic",
+    "personal_objectives": "Excel in Data Structures and prepare for internships",
+    "challenges": "Balancing coursework with personal projects",
+    "extracurricular_activities": "Robotics Club, Basketball"
+}
+```
+Example Input: An example input dictionary is created to simulate a student's information. This input will be used to fill the prompt template.
+
+```python
+# Render the prompt with example data
+filled_prompt = prompt_template.format(**example_input)
+```
+Prompt Rendering: The prompt is filled with the example data using the format method, which replaces the placeholders in the template with actual values
+
+## Installation
+
+To set up the environment for the Personalized Study Plans generator, you need to install the required packages. You can do this using pip. Run the following commands in your terminal:
+
+```bash
+pip install langchain
+pip install langchain_openai
+pip install pypdf
+pip install faiss-cpu
+pip install openai
+```
+
+## Usage
+
+To use the Personalized Study Plans generator, follow these steps:
+
+1. **Set Up Your Environment:**
+   Ensure that you have installed all the required packages as mentioned in the Installation section.
+
+2. **Obtain Your OpenAI API Key:**
+   Sign up for an OpenAI account and obtain your API key. Replace `"your API key"` in the code with your actual OpenAI API key.
+
+3. **Run the Code:**
+   You can run the provided code in a Python environment (e.g., Jupyter Notebook, Google Colab, or any Python IDE). 
+
+4. **Input Student Information:**
+   Modify the `example_input` dictionary in the code to include the relevant information for the student for whom you want to create a personalized study plan. The fields include:
+   - `name`: The student's name.
+   - `field_of_study`: The student's field of study (e.g., Computer Science).
+   - `year_of_study`: The current year of study (e.g., 2nd Year).
+   - `list_of_subjects`: A comma-separated list of subjects the student is taking.
+   - `preferred_learning_styles`: The student's preferred learning styles (e.g., Visual and kinesthetic).
+   - `personal_objectives`: The student's personal objectives (e.g., Excel in Data Structures).
+   - `challenges`: Any challenges the student faces (e.g., time management issues).
+   - `extracurricular_activities`: A list of extracurricular activities the student is involved in (e.g., Robotics Club, Basketball).
+
+5. **Generate the Study Plan:**
+   After modifying the input, run the code to generate the personalized study plan. The output will be printed to the console.
+
+6. **Review the Output:**
+   Review the generated study plan to ensure it meets the student's needs and preferences. You can further customize the plan as necessary.
+
+By following these steps, you can effectively use the Personalized Study Plans generator to create tailored academic plans for students.
+
+## Requirements
+
+To successfully run the Personalized Study Plans generator, ensure that your environment meets the following requirements:
+
+- **Python Version:** Python 3.7 or higher is recommended.
+- **Pip:** Ensure that pip is installed for package management.
+- **OpenAI API Key:** You must have a valid OpenAI API key to access the GPT model.
+- **Required Packages:** The following packages must be installed:
+  - `langchain`: For building the prompt and managing interactions with the OpenAI model.
+  - `langchain_openai`: For integrating OpenAI's capabilities within LangChain.
+  - `pypdf`: For handling PDF documents if needed in other tasks.
+  - `faiss-cpu`: For efficient similarity search and clustering of embeddings.
+  - `openai`: For accessing OpenAI's API.
+
+Make sure to install the required packages using the commands provided in the Installation section before running the code.
+
+## Contributors
+
+This project was developed by Humza Waqar as part of the assessment for the Generative AI Engineer position at Cogent Labs. Contributions, feedback, and suggestions are welcome. If you would like to contribute to this project, please feel free to reach out.
+
+## License
+
+This project is licensed under the MIT License. You are free to use, modify, and distribute this project as long as you include the original license and copyright notice in any copies or substantial portions of the software.
+
+For more details, please refer to the LICENSE file included in this repository.
