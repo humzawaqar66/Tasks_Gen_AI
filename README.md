@@ -108,7 +108,7 @@ embeddings = get_embeddings([doc.page_content for doc in docs])
 Embedding Generation: The embeddings for each document chunk are generated using a function get_embeddings, which captures the semantic meaning of the text.
 
 
-# README for Task 2: Personalized Study Plans For Students Using LangChain
+### Task 2: Personalized Study Plans For Students Using LangChain
 
 ## Overview
 This task involves creating a personalized study plan generator for students using LangChain and OpenAI's GPT model. The generator takes into account various factors such as the student's name, field of study, year of study, subjects, learning styles, personal objectives, challenges, and extracurricular activities to create a tailored study plan.
