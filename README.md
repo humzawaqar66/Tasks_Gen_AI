@@ -1,4 +1,4 @@
-# Comprehensive README for Generative AI Engineering Assessment Tasks
+# README for Generative AI Engineering Assessment Tasks
 
 ## Table of Contents
 - [Overview](#overview)
