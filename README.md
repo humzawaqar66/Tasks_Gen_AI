@@ -10,7 +10,6 @@
 - [Requirements](#requirements)
 - [Contributions](#contributions)
 - [License](#license)
-- [Author](#author)
 
 ## Overview
 This repository contains assessment tasks designed for a Generative AI Engineer role, showcasing the ability to leverage advanced AI techniques for text processing, summarization, and personalized planning. The tasks utilize LangChain and OpenAI's GPT models to deliver intelligent solutions for summarizing literature and creating tailored academic plans.
