@@ -341,12 +341,8 @@ To successfully run the Personalized Study Plans generator, ensure that your env
 
 Make sure to install the required packages using the commands provided in the Installation section before running the code.
 
+
 ## Contributors
 
 This project was developed by Humza Waqar as part of the assessment for the Generative AI Engineer position at Cogent Labs. Contributions, feedback, and suggestions are welcome. If you would like to contribute to this project, please feel free to reach out.
 
-## License
-
-This project is licensed under the MIT License. You are free to use, modify, and distribute this project as long as you include the original license and copyright notice in any copies or substantial portions of the software.
-
-For more details, please refer to the LICENSE file included in this repository.
