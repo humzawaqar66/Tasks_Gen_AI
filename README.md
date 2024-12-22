@@ -106,6 +106,91 @@ embeddings = get_embeddings([doc.page_content for doc in docs])
 ```
 Embedding Generation: The embeddings for each document chunk are generated using a function get_embeddings, which captures the semantic meaning of the text.
 
+```python
+content_list = [doc.page_content for doc in docs]
+df = pd.DataFrame(content_list, columns=['page_content'])
+```
+DataFrame Creation: The content of the document chunks is converted into a Pandas DataFrame for easier manipulation and analysis.
+
+```python
+num_clusters = 50
+dimension = array.shape[1]
+kmeans = faiss.Kmeans(dimension, num_clusters, niter=20, verbose=True)
+kmeans.train(array)
+
+```
+Clustering: KMeans clustering is applied using FAISS to group the document embeddings into clusters, which helps in identifying similar content for summarization.
+
+```python
+index = faiss.IndexFlatL2(dimension)
+index.add(array)
+
+```
+Index Creation: An index is created for the original dataset using FAISS, allowing for efficient similarity searches.
+
+```python
+D, I = index.search(kmeans.centroids, 1)
+sorted_array = np.sort(I, axis=0).flatten()
+extracted_docs = [docs[i] for i in sorted_array]
+```
+Centroid Search: The nearest centroids are searched in the index, and the corresponding document chunks are extracted for summarization.
+
+```python
+### Create a prompt template for summarization
+```python
+prompt = ChatPromptTemplate.from_template(
+    """Provide a clear and concise overview of the given PDF, capturing all essential points, themes, and highlights while maintaining readability.
+    Address the main events, characters, and themes in a detailed and engaging manner.
+    Present a unified and coherent narrative that feels like a natural progression of the original text.
+    Passage: ```{text}``` 
+    SUMMARY:"""
+)
+```
+Prompt Template Definition: A prompt template is created to guide the model in generating a summary. The template specifies the structure and content of the request, ensuring that the model focuses on key elements such as main events, characters, and themes.
+
+```python
+final_summary = ""
+model = ChatOpenAI(temperature=0, model="gpt-4")
+
+for doc in extracted_docs:
+    new_summary = model.invoke({"text": doc.page_content})
+    final_summary += new_summary
+```
+Summary Generation: The ChatOpenAI model is used to generate the final summary. For each extracted document chunk, the model is invoked to create a summary, which is then concatenated to form a comprehensive overview of the entire text.
+
+```python
+print(final_summary)
+```
+Display Summary: The generated summary is printed to the console, allowing the user to review the concise overview of the book.
+
+```python
+from fpdf import FPDF
+
+class PDF(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 15)
+        self.cell(80)
+        self.cell(30, 10, 'Summary', 1, 0, 'C')
+        self.ln(20)
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, 'Page %s' % self.page_no(), 0, 0, 'C')
+
+pdf = PDF()
+pdf.add_page()
+pdf.set_font("Arial", size=12)
+last_summary_utf8 = final_summary.encode('latin-1', 'replace').decode('latin-1')
+pdf.multi_cell(0, 10, last_summary_utf8)
+```
+PDF Generation: The FPDF library is used to create a PDF document containing the summary. A custom PDF class is defined to handle the header and footer, and the summary text is added to the PDF in a readable format.
+```python
+pdf_output_path = "summ_output.pdf"
+pdf.output(pdf_output_path)
+```
+File Output: The generated PDF is saved to a file named "summ_output.pdf". This allows users to easily share or print the summary.
+
 
 ### Task 2: Personalized Study Plans For Students Using LangChain
 
